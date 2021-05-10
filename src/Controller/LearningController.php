@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Name;
+use App\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -19,9 +20,14 @@ class LearningController extends AbstractController
     {
 //        So today we learned we do NOT do this.
 //        var_dump($request);
+
+        //++++++++++++++++++++++++++++++++++\\
+        //+++ praise be to the omnissiah +++\\
+        //++++++++++++++++++++++++++++++++++\\
+
         //the next lines of code would redirect directly from the index to the change and show name functions.
         //they remain here, commented and forgotten, for those lone pilgrims seeking advice on their usage
-        //+++praise the omnissiah+++
+
 //        $check = false;
 //        if ($check)
 //        {
@@ -30,6 +36,7 @@ class LearningController extends AbstractController
 //        return $this->redirectToRoute('change_my_name');
 
         $redirect = true;
+        $form = Form::class;
         if ($redirect) return $this->redirectToRoute('show_my_name', ['request' => $request]);
 
         return $this->render('learning/index.html.twig', [
@@ -42,8 +49,8 @@ class LearningController extends AbstractController
     {
         $session = new Session();
         $name = $session->get('name');
-        if(empty($name)){
-            return $this->forward('show_my_name');
+        if(empty($name) || strtolower($name)==='unknown'){
+            return $this->redirectToRoute('show_my_name');
 
         }
 
